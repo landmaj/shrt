@@ -15,7 +15,7 @@ func Run() {
 
 	r.HandleFunc("/", indexGet).Methods(http.MethodGet)
 	r.HandleFunc("/", indexPost).Methods(http.MethodPost)
-	r.HandleFunc("/{id}", shortcut).Methods(http.MethodGet)
+	r.HandleFunc("/{shrt}", shortcut).Methods(http.MethodGet)
 
 	srv := &http.Server{
 		Addr:         "127.0.0.1:5000",
