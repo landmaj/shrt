@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+{{ template "head" }}
+<body>
+<section class="section" id="main">
+    <div class="container">
+        <div class="box">
+            <form {{ if . }} method="GET" {{ else }} method="POST" {{ end }}>
+                <div class="field is-grouped">
+                    {{ if . }}
+                        <div class="control is-expanded">
+                            <input class="input is-large" type="text" value="{{ . }}" disabled>
+                        </div>
+                        <div class="control">
+                            <input id="submit" type="submit" class="button is-link is-large" value="Restart">
+                        </div>
+                    {{ else }}
+                        <div class="control is-expanded">
+                            <input name="link" class="input is-large" type="text" placeholder=example.com>
+                        </div>
+                        <div class="control">
+                            <input id="submit" type="submit" class="button is-link is-large" value="Shorten!">
+                        </div>
+                    {{ end }}
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+</body>
+</html>

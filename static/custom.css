@@ -1,0 +1,14 @@
+html {
+    background-color: #efefef;
+}
+
+#main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 100px);
+}
+
+#submit {
+    background-color: #707070;
+}
