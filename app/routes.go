@@ -41,7 +41,7 @@ func (s *server) indexPost() http.HandlerFunc {
 	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		link := r.FormValue("link")
-		id, err := generateShrt(s.db, link)
+		id, err := createShrt(s.db, link)
 		if err != nil {
 			s.tmpl.ExecuteTemplate(w, "index.gohtml", data{
 				Link:    link,
