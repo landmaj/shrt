@@ -2,11 +2,13 @@ package app
 
 import (
 	"database/sql"
+	"github.com/gorilla/handlers"
 	"github.com/gorilla/mux"
 	_ "github.com/joho/godotenv/autoload"
 	"html/template"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -19,7 +21,7 @@ type server struct {
 func (s *server) ListenAndServe() error {
 	srv := &http.Server{
 		Addr:         "127.0.0.1:5000",
-		Handler:      s.router,
+		Handler:      handlers.CombinedLoggingHandler(os.Stdout, s.router),
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 	}
