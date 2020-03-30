@@ -9,6 +9,12 @@ import (
 
 const databaseEnv = "DATABASE_URL"
 
+type shrt struct {
+	shrt string
+	sha  string
+	url  string
+}
+
 func NewDatabase() *sql.DB {
 	dbUrl, exists := os.LookupEnv(databaseEnv)
 	if !exists {
@@ -28,7 +34,7 @@ func NewDatabase() *sql.DB {
 
 func CreateDatabase(db *sql.DB) {
 	query := `
-		BEGIN ;
+		BEGIN;
 		CREATE TABLE IF NOT EXISTS shrts
 		(
 			id   SERIAL,
@@ -45,4 +51,16 @@ func CreateDatabase(db *sql.DB) {
 	if err != nil {
 		log.Fatalln(err)
 	}
+}
+
+func queryBySha(db *sql.DB, sha string) (s shrt, err error) {
+	query := `SELECT shrt, sha, url FROM shrts WHERE sha = $1;`
+	err = db.QueryRow(query, sha).Scan(&s.shrt, &s.sha, &s.url)
+	return
+}
+
+func insert(db *sql.DB, s shrt) (err error) {
+	query := `INSERT INTO shrts (shrt, sha, url) VALUES ($1, $2, $3);`
+	_, err = db.Exec(query, s.shrt, s.sha, s.url)
+	return
 }

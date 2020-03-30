@@ -37,7 +37,7 @@
                     </div>
                 </div>
                 {{ if .Error }}
-                    <p class="has-text-danger">Invalid URL</p>
+                    <p class="has-text-danger">{{ .Error }}</p>
                 {{ end }}
             </form>
         </div>
