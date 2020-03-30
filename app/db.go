@@ -59,6 +59,12 @@ func queryBySha(db *sql.DB, sha string) (s shrt, err error) {
 	return
 }
 
+func queryByShrt(db *sql.DB, sh string) (s shrt, err error) {
+	query := `SELECT shrt, sha, url FROM shrts WHERE shrt = $1;`
+	err = db.QueryRow(query, sh).Scan(&s.shrt, &s.sha, &s.url)
+	return
+}
+
 func insert(db *sql.DB, s shrt) (err error) {
 	query := `INSERT INTO shrts (shrt, sha, url) VALUES ($1, $2, $3);`
 	_, err = db.Exec(query, s.shrt, s.sha, s.url)

@@ -1,8 +1,14 @@
 package app
 
 import (
+	"database/sql"
+	"github.com/gorilla/mux"
+	"log"
 	"net/http"
+	"os"
 )
+
+const rootDomainEnv = "ROOT_DOMAIN"
 
 type data struct {
 	Link    string
@@ -16,6 +22,7 @@ func (s *server) routes() {
 
 	s.router.HandleFunc("/", s.indexGet()).Methods(http.MethodGet)
 	s.router.HandleFunc("/", s.indexPost()).Methods(http.MethodPost)
+	s.router.HandleFunc("/{shrt}", s.redirectShrt()).Methods(http.MethodGet)
 }
 
 func (s *server) indexGet() http.HandlerFunc {
@@ -28,6 +35,10 @@ func (s *server) indexGet() http.HandlerFunc {
 }
 
 func (s *server) indexPost() http.HandlerFunc {
+	rootDomain, exists := os.LookupEnv(rootDomainEnv)
+	if !exists {
+		log.Fatalln("missing environmental variable:", rootDomainEnv)
+	}
 	return func(w http.ResponseWriter, r *http.Request) {
 		link := r.FormValue("link")
 		id, err := generateShrt(s.db, link)
@@ -39,8 +50,23 @@ func (s *server) indexPost() http.HandlerFunc {
 			})
 		} else {
 			s.tmpl.ExecuteTemplate(w, "index.gohtml", data{
-				Link: id,
+				Link: rootDomain + "/" + id,
 			})
 		}
+	}
+}
+
+func (s *server) redirectShrt() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		vars := mux.Vars(r)
+		row, err := queryByShrt(s.db, vars["shrt"])
+		if err == sql.ErrNoRows {
+			w.WriteHeader(404)
+			return
+		} else if err != nil {
+			w.WriteHeader(500)
+			return
+		}
+		http.Redirect(w, r, row.url, http.StatusSeeOther)
 	}
 }
