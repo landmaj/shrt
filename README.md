@@ -1,6 +1,6 @@
 Shrt
 ----
-[<img src="https://github.com/landmaj/shrt/workflows/deploy/badge.svg" width="200" alt="Build Status">](https://github.com/landmaj/deploy/actions)
+[<img src="https://github.com/landmaj/shrt/workflows/deploy/badge.svg" width="200" alt="Deploy Status">](https://github.com/landmaj/shrt/actions)
 
 Simple link shortener. This is my very first project in Go.
 
