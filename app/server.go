@@ -20,7 +20,7 @@ type server struct {
 
 func (s *server) ListenAndServe() error {
 	srv := &http.Server{
-		Addr:         "127.0.0.1:5000",
+		Addr:         "0.0.0.0:5000",
 		Handler:      handlers.CombinedLoggingHandler(os.Stdout, s.router),
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
