@@ -9,6 +9,7 @@
                 <div class="field is-grouped">
                     <div class="control is-expanded">
                         <input
+                                id="link"
                                 name="link"
                                 class="input is-large {{ if .Error }} is-danger {{ end }} {{ if not .Enabled}} is-static {{ end }}"
                                 type="text"
@@ -23,13 +24,20 @@
                                 {{ end }}
                         >
                     </div>
+                    {{ if not .Enabled }}
+                        <div class="control">
+                            <div id="copy" class="button is-link is-large" onclick="copyToClipboard()">
+                                Copy
+                            </div>
+                        </div>
+                    {{ end }}
                     <div class="control">
                         <input
                                 id="submit"
                                 type="submit"
                                 class="button is-link is-large"
                                 {{ if or .Enabled .Error}}
-                                    value="Submit!"
+                                    value="Submit"
                                 {{ else }}
                                     value="Restart"
                                 {{ end }}
