@@ -12,3 +12,8 @@ html {
 #submit {
     background-color: #707070;
 }
+
+#github {
+    position: absolute;
+    right: 0;
+}
