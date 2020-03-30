@@ -1,7 +1,9 @@
 package app
 
 import (
+	"crypto/sha256"
 	"errors"
+	"fmt"
 	"regexp"
 )
 
@@ -11,5 +13,6 @@ func generateId(s string) (string, error) {
 	if !urlRegex.Match([]byte(s)) {
 		return "", errors.New("invalid URL")
 	}
-	return "PLACEHOLDER", nil
+	id := fmt.Sprintf("%x", sha256.Sum256([]byte(s)))
+	return id, nil
 }
