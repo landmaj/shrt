@@ -1,7 +1,9 @@
 package app
 
 import (
+	"database/sql"
 	"github.com/gorilla/mux"
+	_ "github.com/joho/godotenv/autoload"
 	"html/template"
 	"log"
 	"net/http"
@@ -11,6 +13,7 @@ import (
 type server struct {
 	router *mux.Router
 	tmpl   *template.Template
+	db     *sql.DB
 }
 
 func (s *server) ListenAndServe() error {
@@ -20,6 +23,7 @@ func (s *server) ListenAndServe() error {
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 	}
+	log.Println("Application staring...")
 	return srv.ListenAndServe()
 }
 
@@ -27,6 +31,7 @@ func Run() {
 	srv := server{
 		router: mux.NewRouter(),
 		tmpl:   template.Must(template.ParseGlob("template/*.gohtml")),
+		db:     newDatabase(),
 	}
 	srv.routes()
 	log.Fatal(srv.ListenAndServe())
