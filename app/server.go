@@ -31,7 +31,7 @@ func Run() {
 	srv := server{
 		router: mux.NewRouter(),
 		tmpl:   template.Must(template.ParseGlob("template/*.gohtml")),
-		db:     newDatabase(),
+		db:     NewDatabase(),
 	}
 	srv.routes()
 	log.Fatal(srv.ListenAndServe())
