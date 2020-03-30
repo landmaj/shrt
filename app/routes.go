@@ -23,6 +23,8 @@ func (s *server) routes() {
 	s.router.HandleFunc("/", s.indexGet()).Methods(http.MethodGet)
 	s.router.HandleFunc("/", s.indexPost()).Methods(http.MethodPost)
 	s.router.HandleFunc("/{shrt}", s.redirectShrt()).Methods(http.MethodGet)
+
+	s.router.NotFoundHandler = s.notFoundHandler()
 }
 
 func (s *server) indexGet() http.HandlerFunc {
@@ -62,11 +64,19 @@ func (s *server) redirectShrt() http.HandlerFunc {
 		row, err := queryByShrt(s.db, vars["shrt"])
 		if err == sql.ErrNoRows {
 			w.WriteHeader(404)
+			s.tmpl.ExecuteTemplate(w, "error.gohtml", "404 Not Found")
 			return
 		} else if err != nil {
 			w.WriteHeader(500)
+			s.tmpl.ExecuteTemplate(w, "error.gohtml", "500 Internal Server Error")
 			return
 		}
 		http.Redirect(w, r, row.url, http.StatusSeeOther)
+	}
+}
+
+func (s *server) notFoundHandler() http.HandlerFunc {
+	return func(w http.ResponseWriter, r *http.Request) {
+		s.tmpl.ExecuteTemplate(w, "error.gohtml", "404 Not Found")
 	}
 }
