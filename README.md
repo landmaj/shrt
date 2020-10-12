@@ -1,7 +1,5 @@
 shrt
 ----
-[<img src="https://github.com/landmaj/shrt/workflows/deploy/badge.svg" width="200" alt="Deploy Status">](https://github.com/landmaj/shrt/actions)
-
 Simple link shortener. This is my very first project in Go and so you should not expect too much from it.
 
 ### Installation
